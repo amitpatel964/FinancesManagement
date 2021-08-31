@@ -1,2 +1,1 @@
-# FinancesManagement
-A program that helps you keep track of where your finances are and how much you have in total
+This project will begin by keeping track of how much money you have in your savings and checking accounts across several banks among different people. Eventually, other types of investments will be incorporated into the program, allowing the user to see how much they have in total. A roadmap will be added at a later date.
