@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace FinancesManagement
 {
@@ -19,7 +19,33 @@ namespace FinancesManagement
                 Console.WriteLine("1. Select/Add User");
                 Console.WriteLine("2. View/Edit House Income Sources");
                 Console.WriteLine("3. View/Edit House Expenses");
-                break;
+                Console.WriteLine("4. Exit");
+                Console.Write("Input: ");
+
+                string input = Console.ReadLine();
+
+                if (input.Equals("1"))
+                {
+                    if (houseOne.Members.Count == 0)
+                    {
+                        Console.WriteLine("No users in current household. Please enter a name: ");
+                        string newName = Console.ReadLine();
+                        User newUser = new User(newName);
+                        houseOne.addMember(newUser);
+                    }
+                }
+                else if (input.Equals("2"))
+                {
+
+                }
+                else if (input.Equals("3"))
+                {
+
+                }
+                else if (input.Equals("4"))
+                {
+                    break;
+                }
             }
         }
     }
@@ -29,18 +55,28 @@ namespace FinancesManagement
     public class User
     {
         private string name;
-        private ArrayList userBanks;
+        private List<Bank> userBanks;
         private int cashOnHand;
+        private List<Income> incomeSourcesForUser;
+        private List<Expense> expensesForUser;
+        private int totalAmountOfMoney;
+        private int netIncome;
 
-        public User (string name, int cashOnHand)
+        public User (string name)
         {
             this.Name = name;
-            this.CashOnHand = cashOnHand;
+            this.userBanks = new List<Bank>();
+            this.incomeSourcesForUser = new List<Income>();
+            this.expensesForUser = new List<Expense>();
         }
 
         public string Name { get => name; set => name = value; }
         public int CashOnHand { get => cashOnHand; set => cashOnHand = value; }
-        public ArrayList UserBanks { get => userBanks; set => userBanks = value; }
+        public List<Bank> UserBanks { get => userBanks; set => userBanks = value; }
+        public List<Income> IncomeSourcesForUser { get => incomeSourcesForUser; set => incomeSourcesForUser = value; }
+        public List<Expense> ExpensesForUser { get => expensesForUser; set => expensesForUser = value; }
+        public int TotalAmountOfMoney { get => totalAmountOfMoney; set => totalAmountOfMoney = value; }
+        public int NetIncome { get => netIncome; set => netIncome = value; }
 
         public void addBank(Bank bankName)
         {
@@ -74,28 +110,25 @@ namespace FinancesManagement
 
     // The Household class keeps track of all of the members of a household. The members will be separate User classes.
     // This class also keeps track of the different expenses of the house. There are two ArrayLists to keep track of the expenses and the sources of income as well.
-    // Some expenses and sources of income may be separated to the User class to allow more customization, but I will see how this works for now.
+    // House income sources and expenses will automatically add income sources and expenses from the members of the household.
+    // Expenses will mainly be monthly costs of the household and cars as well.
+    // Please note that the household class can be used for houses, apartments, studios, condos, townhouses or any living space.
     public class Household
     {
-        private ArrayList members;
-        private ArrayList sourcesOfIncome;
-        private ArrayList expenses;
-
-        public Household(ArrayList members, ArrayList sourcesOfIncome, ArrayList expenses)
-        {
-            this.Members = members;
-            this.SourcesOfIncome = sourcesOfIncome;
-            this.Expenses = expenses;
-        }
+        private List<User> members;
+        private List<Income> sourcesOfIncomeOfHouse;
+        private List<Expense> expensesOfHouse;
 
         public Household()
         {
-
+            this.members = new List<User>();
+            this.sourcesOfIncomeOfHouse = new List<Income>();
+            this.expensesOfHouse = new List<Expense>();
         }
 
-        public ArrayList Members { get => members; set => members = value; }
-        public ArrayList SourcesOfIncome { get => sourcesOfIncome; set => sourcesOfIncome = value; }
-        public ArrayList Expenses { get => expenses; set => expenses = value; }
+        public List<User> Members { get => members; set => members = value; }
+        public List<Income> SourcesOfIncome { get => sourcesOfIncomeOfHouse; set => sourcesOfIncomeOfHouse = value; }
+        public List<Expense> Expenses { get => expensesOfHouse; set => expensesOfHouse = value; }
 
         public void addMember(User newMember)
         {
@@ -104,12 +137,12 @@ namespace FinancesManagement
 
         public void addSourceOfIncome(Income newSourceOfIncome)
         {
-            this.sourcesOfIncome.Add(newSourceOfIncome);
+            this.sourcesOfIncomeOfHouse.Add(newSourceOfIncome);
         }
 
         public void addExpense(Expense newExpense)
         {
-            this.expenses.Add(newExpense);
+            this.expensesOfHouse.Add(newExpense);
         }
     }
 
